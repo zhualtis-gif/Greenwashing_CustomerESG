@@ -159,3 +159,103 @@ No observations were removed during this audit.
 - `results/tables/02_panel_summary.csv`
 - `results/tables/02_firm_coverage.csv`
 - `results/tables/02_annual_coverage.csv`
+
+## Aim 1: Annual Trends and Within-Firm Changes
+
+### Research Questions
+
+1. How do greenwashing (GW) and customer ESG (CESG)
+   vary across calendar years?
+2. How are within-firm annual changes in CESG
+   associated with annual changes in GW?
+
+### Analysis Procedure
+
+The analysis uses the original Stata dataset and
+the validated firm-year identifiers.
+
+Script: `R/03_aim1_analysis.R`
+
+The analysis includes:
+
+1. Calculating annual means and medians of GW and CESG.
+2. Sorting observations by firm ID and calendar year.
+3. Identifying consecutive-year observations.
+4. Calculating annual changes in GW and CESG for
+   consecutive-year pairs only.
+5. Summarizing annual changes across firms and years.
+6. Calculating Pearson and Spearman correlations
+   between annual changes in CESG and GW.
+7. Visualizing annual trends and within-firm changes.
+
+The correlation calculations and visualizations are
+included in `Final_Report.Rmd`.
+
+### Main Results
+
+The analysis identifies 2,186 consecutive-year pairs.
+
+| Statistic | Result |
+| --- | ---: |
+| Mean annual change in GW | 0.0097 |
+| Median annual change in GW | 0.0058 |
+| Mean annual change in CESG | 0.0321 |
+| Median annual change in CESG | 0.0000 |
+| Pearson correlation | -0.1291 |
+| Spearman correlation | -0.1424 |
+
+The results indicate a weak negative descriptive
+association between annual changes in customer ESG
+performance and supplier greenwashing.
+
+These correlations do not establish causality.
+Repeated firm observations and unobserved characteristics
+may influence the observed relationship.
+
+### Output Files
+
+The analysis generates:
+
+- `results/tables/03_annual_trends.csv`
+- `results/tables/03_change_summary.csv`
+- `results/tables/03_yearly_changes.csv`
+- `results/tables/03_correlation_results.csv`
+
+The report presents three figures:
+
+1. Annual Greenwashing Trends
+2. Annual Customer ESG Trends
+3. Within-Firm Annual Changes
+
+### Reproducing Aim 1
+
+Software used: R 4.5.1
+
+Required R packages:
+- haven
+- dplyr
+- ggplot2
+- knitr
+- rmarkdown
+
+Install the packages if necessary:
+
+    install.packages(c("haven", "dplyr", "ggplot2",
+                       "knitr", "rmarkdown"))
+
+Open the RStudio project and run, in order:
+
+    source("R/01_import_and_audit.R")
+    source("R/02_panel_structure.R")
+    source("R/03_aim1_analysis.R")
+
+To regenerate the HTML report from a fresh R session,
+run from the project root:
+
+    rmarkdown::render("Final_Report.Rmd")
+
+The R Markdown report executes the analysis scripts
+and generates the figures, tables, and HTML output.
+
+The original dataset remains unchanged throughout
+the pipeline.

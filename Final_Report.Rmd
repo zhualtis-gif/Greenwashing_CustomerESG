@@ -1,0 +1,385 @@
+---
+title: "Greenwashing, Customer ESG, and Supply-Chain Transparency"
+author: "ESG and Finance Group"
+date: "2026-10-19"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+# Global chunk settings
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+
+# Reproduce all previous analysis steps
+source("R/01_import_and_audit.R", local = TRUE)
+source("R/02_panel_structure.R", local = TRUE)
+source("R/03_aim1_analysis.R", local = TRUE)
+
+# Verify that required objects were created
+stopifnot(
+  exists("data_summary"),
+  exists("panel_summary"),
+  exists("annual_trends"),
+  exists("change_summary")
+)
+```
+
+
+# Reproduce the analysis from the original data.
+source("R/01_import_and_audit.R", local = knitr::knit_global())
+source("R/02_panel_structure.R", local = knitr::knit_global())
+source("R/03_aim1_analysis.R", local = knitr::knit_global())
+```
+
+# 1. Introduction
+
+Greenwashing can reduce the reliability of corporate
+environmental, social, and governance (ESG) disclosures.
+Customer ESG expectations may influence suppliers'
+disclosure practices and environmental behavior.
+
+Customer pressure could encourage more substantive
+environmental improvements, potentially reducing
+greenwashing. Alternatively, it could encourage
+suppliers to emphasize favorable disclosures without
+equivalent improvements in environmental performance.
+
+This project describes the relationship between
+customer ESG performance and supplier greenwashing,
+and examines whether the relationship differs across
+levels of supply-chain transparency.
+
+The analysis is descriptive and does not establish
+causal relationships.
+
+# 2. Data Description
+
+The dataset comes from Chen and Tian (2025),
+*Greenwashing and Customer ESG Performance:
+The Moderating Effects of Corporate Transparency*.
+
+Source: https://doi.org/10.17632/vwmj3yrt37.1
+
+The original Stata file is stored in `data/raw/data.dta`.
+
+The primary variables are:
+
+- `GW`: Greenwashing index
+- `CESG`: Customer ESG performance
+- `sct_num`: Supply-chain transparency measure
+- `GWA` and `CESGM`: Alternative measures
+- `id` and `year`: Firm and year identifiers
+
+# 3. Data Validation
+
+The original dataset was imported using `haven`.
+We checked its dimensions, firm identifiers,
+year range, duplicate observations, and missing values.
+
+```{r data-validation}
+knitr::kable(
+  data_summary,
+  caption = "Table 1. Initial Data Validation"
+)
+```
+
+The seven key research variables have no missing
+values. No original observations were deleted or
+imputed during the initial audit.
+
+# 4. Panel Structure
+
+The dataset is an unbalanced firm-year panel.
+We checked the observation years for each firm
+to identify gaps and consecutive-year pairs.
+
+```{r panel-structure}
+knitr::kable(
+  panel_summary,
+  caption = "Table 2. Panel Structure"
+)
+```
+
+Only observations from consecutive years are used
+to calculate within-firm annual changes.
+
+# 5. Aim 1: Annual Trends and Within-Firm Changes
+
+## 5.1 Research Questions
+
+How do greenwashing and customer ESG performance
+vary over time?
+
+How are annual within-firm changes in customer ESG
+performance related to changes in greenwashing?
+
+## 5.2 Annual Descriptive Statistics
+
+The following table summarizes the annual mean
+and median of GW and CESG.
+
+```{r annual-summary}
+knitr::kable(
+  annual_trends,
+  digits = 3,
+  caption = "Table 3. Annual GW and CESG Statistics"
+)
+```
+
+## 5.3 Within-Firm Annual Changes
+
+Annual changes were calculated only when the same
+firm was observed in two consecutive calendar years.
+
+```{r change-summary}
+knitr::kable(
+  change_summary,
+  digits = 4,
+  caption = "Table 4. Within-Firm Annual Changes"
+)
+```
+
+## 5.4 Visualizations
+
+
+The following figure compares the annual mean and
+median of greenwashing (GW). Both statistics are
+reported because the GW distribution contains
+relatively large positive values.
+
+```{r gw-trend, fig.width=9, fig.height=5, fig.cap="Figure 1. Annual Greenwashing Trends, 2009–2023"}
+
+library(ggplot2)
+
+ggplot(annual_trends, aes(x = year)) +
+  geom_line(
+    aes(y = mean_GW, linetype = "Mean"),
+    linewidth = 0.9
+  ) +
+  geom_line(
+    aes(y = median_GW, linetype = "Median"),
+    linewidth = 0.9
+  ) +
+  geom_point(aes(y = mean_GW), size = 1.8) +
+  geom_point(aes(y = median_GW), size = 1.8) +
+  scale_x_continuous(breaks = 2009:2023) +
+  labs(
+    title = "Annual Greenwashing Trends",
+    x = "Year",
+    y = "Greenwashing Index (GW)",
+    linetype = "Statistic",
+    caption = "Note: Annual samples vary in firm composition."
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+The next figure presents the annual mean and median
+of customer ESG performance (CESG), allowing us to
+compare its temporal pattern with greenwashing.
+
+```{r cesg-trend, fig.width=9, fig.height=5, fig.cap="Figure 2. Annual Customer ESG Trends, 2009–2023"}
+ggplot(annual_trends, aes(x = year)) +
+  geom_line(
+    aes(y = mean_CESG, linetype = "Mean"),
+    linewidth = 0.9
+  ) +
+  geom_line(
+    aes(y = median_CESG, linetype = "Median"),
+    linewidth = 0.9
+  ) +
+  geom_point(aes(y = mean_CESG), size = 1.8) +
+  geom_point(aes(y = median_CESG), size = 1.8) +
+  scale_x_continuous(breaks = 2009:2023) +
+  labs(
+    title = "Annual Customer ESG Trends",
+    x = "Year",
+    y = "Customer ESG Performance (CESG)",
+    linetype = "Statistic",
+    caption = "Note: Annual samples vary in firm composition."
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+## 5.5 Association Between Within-Firm Annual Changes
+
+To examine whether changes in customer ESG performance
+are associated with changes in supplier greenwashing,
+we compare the annual changes in CESG and GW for firms
+observed in consecutive years.
+
+Pearson correlation describes their linear association,
+while Spearman correlation provides a rank-based measure
+that is less sensitive to extreme values.
+
+```{r aim1-correlations}
+# Calculate correlations for consecutive-year pairs
+
+complete_pairs <- firm_changes[
+  complete.cases(
+    firm_changes[, c("delta_GW", "delta_CESG")]
+  ),
+]
+
+correlation_results <- data.frame(
+  Statistic = c(
+    "Pearson correlation",
+    "Spearman correlation"
+  ),
+  Value = c(
+    cor(
+      complete_pairs$delta_CESG,
+      complete_pairs$delta_GW,
+      method = "pearson"
+    ),
+    cor(
+      complete_pairs$delta_CESG,
+      complete_pairs$delta_GW,
+      method = "spearman"
+    )
+  ),
+  N = nrow(complete_pairs)
+)
+
+
+# Export correlation results for reproducibility
+write.csv(
+  correlation_results,
+  "results/tables/03_correlation_results.csv",
+  row.names = FALSE
+)
+
+
+knitr::kable(
+  correlation_results,
+  digits = 4,
+  caption = "Table 5. Association Between Annual Changes"
+)
+```
+
+The following scatterplot visualizes the relationship
+between annual changes in customer ESG and greenwashing.
+A fitted linear trend is shown for descriptive purposes.
+Small horizontal jitter is added to improve visibility
+where observations overlap.
+
+```{r aim1-scatter, fig.width=9, fig.height=6, fig.cap="Figure 3. Within-Firm Annual Changes in Customer ESG and Greenwashing"}
+
+ggplot(
+  complete_pairs,
+  aes(x = delta_CESG, y = delta_GW)
+) +
+  geom_jitter(
+    width = 0.07,
+    height = 0,
+    alpha = 0.2,
+    size = 1
+  ) +
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    linewidth = 0.9
+  ) +
+  labs(
+    title = "Within-Firm Annual Changes",
+    subtitle = "Consecutive-year firm observations",
+    x = "Annual Change in Customer ESG (CESG)",
+    y = "Annual Change in Greenwashing (GW)",
+    caption = paste(
+      "N =", nrow(complete_pairs),
+      "consecutive-year pairs; descriptive relationship only."
+    )
+  ) +
+  theme_minimal()
+```
+
+## 5.6 Interpretation of Aim 1 Results
+
+The descriptive analysis reveals several patterns in the
+relationship between customer ESG performance and supplier
+greenwashing.
+
+First, annual greenwashing levels fluctuate substantially
+between 2009 and 2023. Mean GW reaches approximately 0.50
+in both 2019 and 2020 before declining in subsequent
+years. The annual mean generally exceeds the median,
+consistent with the right-skewed distribution of GW.
+
+Second, average customer ESG performance increases from
+approximately 4.22 in 2009 to 5.06 in 2023, although
+the trend is not consistently upward. Because the
+composition of firms differs across years, these annual
+averages should not be interpreted as changes within
+a fixed group of firms.
+
+Third, among 2,186 consecutive-year firm observations,
+the mean annual changes in GW and CESG are approximately
+0.0097 and 0.0321, respectively. Their median changes
+are 0.0058 and 0.0000.
+
+The Pearson correlation between annual changes in CESG
+and GW is -0.1291, while the Spearman correlation is
+-0.1424. Both measures indicate a weak negative
+association.
+
+These findings suggest that larger annual improvements
+in customer ESG performance tend to be associated with
+smaller increases or greater decreases in supplier
+greenwashing. However, the magnitude of this descriptive
+relationship is limited.
+
+## 5.7 Limitations of Aim 1
+
+Several limitations should be considered.
+
+First, the panel is unbalanced, and the number of
+observed firms varies substantially across years.
+Changes in annual sample averages may therefore
+reflect differences in sample composition.
+
+Second, within-firm annual changes are calculated
+only for consecutive-year observations. This avoids
+treating multi-year gaps as annual changes but limits
+the change analysis to 2,186 observation pairs.
+
+Third, the greenwashing variable contains relatively
+large positive values, which may influence means and
+Pearson correlations. Medians and Spearman correlations
+are included as complementary descriptive measures.
+
+Finally, the correlations do not establish causality.
+Other firm characteristics, common economic conditions,
+and repeated observations of the same firms may affect
+the observed association.
+
+The analysis provides descriptive evidence rather than
+a causal estimate of the effect of customer ESG on
+supplier greenwashing.
+
+
+
+# 6. Aim 2: Supply-Chain Transparency
+
+This section will compare the descriptive relationship
+between CESG and GW across transparency groups.
+
+# 7. Discussion and Limitations
+
+Interpretation, sample limitations, and implications
+will be documented after completing both research aims.
+
+# 8. Reproducibility
+
+The report executes the R scripts stored in the
+`R/` directory, using the original Stata dataset.
+Instructions for obtaining data and reproducing the
+full pipeline are provided in `README.md`.

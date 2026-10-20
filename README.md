@@ -37,15 +37,17 @@ The dataset contains 3,709 firm-year observations from
 
 ## Reproducibility
 
-The complete data acquisition procedure, software
-requirements, cleaning decisions, and script execution
-order will be documented as the project progresses.
+This repository documents the data source, validation procedures, analytical
+decisions, script execution order, and generated outputs.
+The complete R Markdown report can be reproduced from a fresh R
+session using the original Stata dataset included in the repository.
 
 ## Methods
 
-R and the tidyverse will be used for data validation,
-cleaning, transformation, descriptive analysis,
-and visualization.
+R is used for data validation, panel-structure auditing, descriptive analysis,
+correlation analysis, sensitivity checks, and visualization.
+The original dataset is preserved without modification.
+All analytical results are generated programmatically from the supplied Stata file.
 
 ## Data Acquisition and Initial Validation
 
@@ -259,3 +261,245 @@ and generates the figures, tables, and HTML output.
 
 The original dataset remains unchanged throughout
 the pipeline.
+
+
+## Aim 2: Customer ESG, Greenwashing, and Supply-Chain Transparency
+
+### Research Question
+
+How does the descriptive association between customer ESG
+performance and supplier greenwashing differ across levels
+of supply-chain transparency?
+
+### Analysis Script
+
+`R/04_aim2_analysis.R`
+
+The analysis uses the original firm-year dataset and
+retains all 3,709 observations.
+
+### Transparency Grouping
+
+The supplied transparency variable, `sct_num`, takes
+integer values from 0 to 10.
+
+Because observations are heavily concentrated at the
+endpoints, the analysis uses three descriptive groups:
+
+| sct_num | Observations | Share |
+| --- | ---: | ---: |
+| 0 | 2,089 | 56.3% |
+| 1–9 | 182 | 4.9% |
+| 10 | 1,438 | 38.8% |
+
+This grouping avoids treating the sparsely represented
+intermediate values as separate groups.
+
+These are groups of firm-year observations, not necessarily
+mutually exclusive sets of firms.
+
+The exact construction and interpretation of the
+transparency score are not fully documented in the
+supplied replication materials.
+
+### Main Analysis
+
+Within each transparency group, we calculate:
+
+- Number of firm-year observations and distinct firms
+- Mean and median greenwashing (GW)
+- Mean and median customer ESG performance (CESG)
+- Pearson correlation between CESG and GW
+- Spearman correlation between CESG and GW
+- Descriptive linear association between CESG and GW
+
+The report also presents scatterplots with fitted
+linear trend lines for the three groups.
+
+### Main Findings
+
+| Transparency group | Pearson r | Spearman r |
+| --- | ---: | ---: |
+| 0 | -0.237 | -0.275 |
+| 1–9 | -0.171 | -0.210 |
+| 10 | -0.034 | -0.049 |
+
+The negative descriptive association is strongest
+in the group with sct_num equal to 0 and weakest
+in the group with sct_num equal to 10.
+
+These are unadjusted correlations. They do not establish
+a statistically significant moderation effect or
+a causal relationship.
+
+### Alternative-Measure Analysis
+
+We compare four combinations of the supplied measures:
+
+1. CESG and GW
+2. CESGM and GW
+3. CESG and GWA
+4. CESGM and GWA
+
+Replacing CESG with CESGM produces similar results
+when GW is the outcome.
+
+However, replacing GW with GWA substantially changes
+the correlations. Therefore, the main descriptive
+pattern is not robust to the choice of greenwashing
+measure.
+
+The supplied data identify GWA as an alternative
+greenwashing measure, but the available documentation
+does not establish full directional or measurement
+comparability between GW and GWA.
+
+Both variables are retained in their original forms.
+
+### GWA Outlier Sensitivity Analysis
+
+The alternative greenwashing measure GWA contains
+extreme negative values.
+
+To examine their influence, we compare the full sample
+with a sensitivity sample retaining observations between
+the pooled 1st and 99th percentiles of GWA.
+
+The thresholds are:
+
+- 1st percentile: -20.1467
+- 99th percentile: 1.3856
+
+The sensitivity sample retains 3,633 observations
+and excludes 76 observations from this specific check.
+
+After this exclusion, Pearson correlations change
+somewhat but remain close to zero. Spearman correlations
+remain relatively stable.
+
+The sensitivity check does not reproduce the negative
+CESG-GW association pattern using GWA.
+
+No observations are deleted from the original dataset,
+and the full sample remains the primary analysis.
+
+### Aim 2 Generated Outputs
+
+- `results/tables/04_sct_frequency.csv`
+- `results/tables/04_sct_group_summary.csv`
+- `results/tables/04_sct_association.csv`
+- `results/tables/04_alternative_measures.csv`
+- `results/tables/04_measure_distribution.csv`
+- `results/tables/04_measure_agreement.csv`
+- `results/tables/04_GWA_thresholds.csv`
+- `results/tables/04_GWA_sensitivity.csv`
+
+The final R Markdown report also includes the
+corresponding tables, plots, and interpretations.
+
+## Complete Reproduction Instructions
+
+### Software
+
+The project was developed using R 4.5.1.
+
+The main required packages are:
+
+- haven
+- dplyr
+- ggplot2
+- knitr
+- rmarkdown
+
+Install these packages if necessary:
+
+```r
+install.packages(
+  c("haven", "dplyr", "ggplot2", "knitr", "rmarkdown")
+)
+```
+
+### Running the Analysis
+
+Clone or download the repository and open its
+root directory in RStudio or a Terminal.
+
+The original input file is:
+
+`data/raw/data.dta`
+
+Run the analysis scripts in order:
+
+```r
+source("R/01_import_and_audit.R")
+source("R/02_panel_structure.R")
+source("R/03_aim1_analysis.R")
+source("R/04_aim2_analysis.R")
+```
+
+Alternatively, generate the complete HTML report
+directly from a Terminal in the project root:
+
+```bash
+Rscript --vanilla -e 'rmarkdown::render("Final_Report.Rmd", output_format="html_document", quiet=TRUE)'
+```
+
+The R Markdown report runs the analysis scripts
+and regenerates the tables, figures, and HTML output.
+
+The final report is saved as:
+
+`Final_Report.html`
+
+All CSV outputs are stored in:
+
+`results/tables/`
+
+The complete HTML report was successfully rendered
+using a new R process with the `--vanilla` option
+on October 19, 2026.
+
+### Reproducibility Scope
+
+The pipeline reproduces the cleaning, validation,
+transformation, descriptive statistics, correlations,
+sensitivity checks, and report generation starting
+from the publicly supplied `data.dta`.
+
+The original researchers also supplied Stata replication
+do-files for their published analyses.
+
+However, the available data documentation and do-files
+do not provide complete formulas for constructing
+all key measures from underlying source records.
+
+Consequently, this project does not claim to reconstruct
+the original authors' preprocessed measures from
+their underlying financial, ESG, or disclosure sources.
+
+## Overall Limitations
+
+The project has several important limitations.
+
+First, the panel is unbalanced, and firm coverage
+varies considerably across years.
+
+Second, the descriptive analyses do not control
+for all possible firm-level and year-level factors.
+
+Third, repeated observations from the same firms
+mean that simple correlations should not be interpreted
+as independent-observation inferential tests.
+
+Fourth, the intermediate transparency group contains
+relatively few observations.
+
+Fifth, the original construction formulas for several
+key variables are not fully available in the supplied
+replication materials.
+
+Finally, the observed CESG-GW relationship is sensitive
+to the choice of greenwashing measure.
+
+The results are therefore presented as exploratory
+and descriptive rather than causal findings.

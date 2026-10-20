@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 source("R/01_import_and_audit.R", local = TRUE)
 source("R/02_panel_structure.R", local = TRUE)
 source("R/03_aim1_analysis.R", local = TRUE)
+source("R/04_aim2_analysis.R", local = TRUE)
+
 
 # Verify that required objects were created
 stopifnot(
@@ -29,11 +31,6 @@ stopifnot(
 ```
 
 
-# Reproduce the analysis from the original data.
-source("R/01_import_and_audit.R", local = knitr::knit_global())
-source("R/02_panel_structure.R", local = knitr::knit_global())
-source("R/03_aim1_analysis.R", local = knitr::knit_global())
-```
 
 # 1. Introduction
 
@@ -369,8 +366,249 @@ supplier greenwashing.
 
 # 6. Aim 2: Supply-Chain Transparency
 
-This section will compare the descriptive relationship
-between CESG and GW across transparency groups.
+## 6.1 Research Question
+
+Does the descriptive relationship between customer ESG
+performance (CESG) and supplier greenwashing (GW) differ
+across levels of supply-chain transparency?
+
+Unlike Aim 1, which examines within-firm annual changes,
+Aim 2 compares the levels of CESG and GW across
+firm-year observations.
+
+## 6.2 Transparency Groups
+
+The original transparency variable, sct_num, ranges
+from 0 to 10. Its distribution is concentrated at
+the two endpoints.
+
+We use three groups:
+
+- Group 0: sct_num = 0
+- Group 1-9: sct_num between 1 and 9
+- Group 10: sct_num = 10
+
+Intermediate values are combined because they contain
+relatively few observations. This grouping preserves
+all observations and does not modify the original
+transparency variable.
+
+```{r aim2-group-summary}
+knitr::kable(
+  sct_group_summary,
+  digits = 3,
+  caption = "Table 6. Descriptive Statistics by Transparency Group"
+)
+```
+
+## 6.3 CESG-GW Associations by Transparency Group
+
+We calculate Pearson and Spearman correlations
+separately for each transparency group.
+
+We also calculate a descriptive linear slope to compare
+the direction and magnitude of the fitted relationship.
+
+```{r aim2-associations}
+knitr::kable(
+  sct_association,
+  digits = 4,
+  caption = "Table 7. CESG-GW Associations by Transparency Group"
+)
+```
+
+## 6.4 Visualization of Group-Specific Associations
+
+The following figure displays GW against CESG separately
+for the three transparency groups.
+
+Each panel uses the same axis scales to support visual
+comparison. The fitted lines represent descriptive
+linear relationships, not causal effects.
+
+```{r aim2-scatter, fig.width=11, fig.height=5.5}
+library(ggplot2)
+
+plot_data <- aim2_data %>%
+  mutate(
+    transparency_group = factor(
+      transparency_group,
+      levels = c("0", "1-9", "10")
+    )
+  )
+
+ggplot(
+  plot_data,
+  aes(x = CESG, y = GW)
+) +
+  geom_jitter(
+    width = 0.04,
+    height = 0,
+    alpha = 0.15,
+    size = 0.8
+  ) +
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    linewidth = 1
+  ) +
+  facet_wrap(
+    ~ transparency_group,
+    nrow = 1
+  ) +
+  labs(
+    title = "Customer ESG and Greenwashing",
+    subtitle = "Associations by Supply-Chain Transparency Group",
+    x = "Customer ESG Performance (CESG)",
+    y = "Greenwashing Index (GW)",
+    caption = paste(
+      "Transparency groups are defined by sct_num.",
+      "Fitted lines are descriptive."
+    )
+  ) +
+  theme_minimal()
+```
+
+## 6.5 Preliminary Interpretation
+
+The descriptive relationship between customer ESG
+performance and supplier greenwashing differs across
+the three transparency groups.
+
+For observations with sct_num = 0, the Pearson
+correlation is approximately -0.237, and the
+descriptive linear slope is -0.328.
+
+For the intermediate group (sct_num = 1-9), the
+Pearson correlation is approximately -0.171,
+with a slope of -0.193.
+
+For observations with sct_num = 10, the Pearson
+correlation is approximately -0.034, with a slope
+of -0.048.
+
+These results indicate that the negative CESG-GW
+association is weaker in the group with the highest
+observed value of sct_num.
+
+However, these descriptive differences do not
+establish a statistically significant interaction
+or a causal moderating effect.
+
+The intermediate transparency group contains only
+182 observations. Furthermore, the same firm may
+appear in multiple years, and differences in firm
+characteristics or sample composition may contribute
+to the observed patterns.
+```
+
+## 6.6 Alternative-Measure Comparisons
+
+To assess whether the descriptive findings depend on
+variable selection, we repeat the analysis using
+alternative measures of customer ESG performance
+(CESGM) and greenwashing (GWA).
+
+The four combinations are CESG-GW, CESGM-GW,
+CESG-GWA, and CESGM-GWA.
+
+```{r aim2-alternative-measures}
+knitr::kable(
+  alternative_results[
+    , c(
+      "customer_measure",
+      "greenwashing_measure",
+      "transparency_group",
+      "n_observations",
+      "pearson_r",
+      "spearman_r"
+    )
+  ],
+  digits = 3,
+  caption = "Table 8. Alternative-Measure Comparisons"
+)
+```
+
+Replacing CESG with CESGM produces similar
+correlation patterns across transparency groups
+when GW is the outcome.
+
+However, replacing GW with GWA substantially
+changes the results. Pearson correlations are
+close to zero, while Spearman correlations
+are generally positive.
+
+The alternative-measure analysis therefore
+does not establish that the main descriptive
+pattern is robust to the choice of greenwashing
+measure.
+
+## 6.7 GWA Distribution and Sensitivity Analysis
+
+The alternative greenwashing measure GWA has a
+substantially different distribution from GW.
+
+GWA ranges from approximately -92.57 to 2.37,
+with a median of 0.85. The relatively large
+negative values may influence Pearson correlations.
+
+We conduct an additional sensitivity analysis
+by excluding observations outside the pooled
+1st and 99th percentiles of GWA.
+
+The original data remain unchanged, and the full
+sample results remain the primary comparison.
+
+```{r aim2-gwa-sensitivity}
+knitr::kable(
+  gwa_sensitivity,
+  digits = 4,
+  caption = "Table 9. GWA Outlier Sensitivity Analysis"
+)
+```
+
+The sensitivity sample retains 3,633 of the
+3,709 firm-year observations.
+
+After excluding observations outside the pooled
+percentile thresholds, Pearson correlations
+change somewhat but remain close to zero.
+
+Spearman correlations remain positive across
+all three transparency groups and change little
+relative to the full-sample estimates.
+
+Thus, extreme GWA values affect the magnitude
+and occasionally the direction of Pearson
+correlations, but removing these observations
+does not reproduce the negative association
+pattern observed with GW.
+
+## 6.8 Interpretation and Measurement Limitations
+
+The main CESG-GW analysis suggests that the
+negative association between customer ESG
+and supplier greenwashing is weaker in groups
+with higher values of sct_num.
+
+However, this descriptive pattern is sensitive
+to the choice of greenwashing measure.
+
+The original replication files identify GW as
+the primary outcome and GWA as an alternative
+outcome, but the available documentation does
+not provide complete construction formulas or
+sufficient information to establish their
+directional comparability.
+
+We therefore retain both variables in their
+original forms and avoid recoding either measure.
+
+These results should be interpreted as
+descriptive associations rather than evidence
+of a causal or statistically established
+moderating effect of transparency.
+
 
 # 7. Discussion and Limitations
 

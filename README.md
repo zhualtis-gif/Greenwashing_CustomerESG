@@ -14,6 +14,32 @@ across levels of supply-chain transparency.
 2. Compare the relationship between customer ESG and
    greenwashing across supply-chain transparency groups.
 
+
+## Results Preview
+
+The following figures were generated directly from the
+original data using the reproducible R Markdown pipeline.
+
+### Figure 1. Annual Greenwashing Trends
+
+![Annual Greenwashing Trends](results/figures/gw-trend-1.png)
+
+### Figure 2. Annual Customer ESG Trends
+
+![Annual Customer ESG Trends](results/figures/cesg-trend-1.png)
+
+### Figure 3. Within-Firm Annual Changes
+
+![Within-Firm Changes in CESG and GW](results/figures/aim1-scatter-1.png)
+
+### Figure 4. Customer ESG and Greenwashing by Transparency Group
+
+![CESG and GW by Transparency Group](results/figures/aim2-scatter-1.png)
+
+The figures show descriptive associations and should
+not be interpreted as evidence of causality.
+
+
 ## Data Source
 
 Chen, H., & Tian, Y. (2025).
@@ -29,11 +55,10 @@ The dataset contains 3,709 firm-year observations from
 ## Repository Structure
 
 - `data/raw/`: Original input data
-- `data/processed/`: Generated intermediate datasets
 - `R/`: Data cleaning and analysis scripts
 - `results/figures/`: Final figures
 - `results/tables/`: Final summary tables
-- `docs/`: Variable definitions and processing documentation
+- `docs/`: HTML report for GitHub Pages
 
 ## Reproducibility
 
@@ -150,8 +175,8 @@ Therefore, changes in annual sample averages may partly
 reflect changes in sample composition rather than changes
 within the same firms.
 
-The main within-firm change analysis will use only
-consecutive-year pairs. Observations with longer gaps
+The main within-firm change analysis uses only consecutive-year pairs.
+Observations with longer gaps
 will not be treated as one-year changes.
 
 No observations were removed during this audit.

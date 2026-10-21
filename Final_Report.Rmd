@@ -8,11 +8,16 @@ output: html_document
 
 ```{r setup, include=FALSE}
 # Global chunk settings
+
 knitr::opts_chunk$set(
   echo = TRUE,
   warning = FALSE,
-  message = FALSE
+  message = FALSE,
+  fig.path = "results/figures/",
+  dev = "png",
+  dpi = 160
 )
+
 
 # Reproduce all previous analysis steps
 source("R/01_import_and_audit.R", local = TRUE)
@@ -500,7 +505,7 @@ The intermediate transparency group contains only
 appear in multiple years, and differences in firm
 characteristics or sample composition may contribute
 to the observed patterns.
-```
+
 
 ## 6.6 Alternative-Measure Comparisons
 

@@ -76,6 +76,14 @@ The primary variables are:
 - `GWA` and `CESGM`: Alternative measures
 - `id` and `year`: Firm and year identifiers
 
+
+A data dictionary covering all 34 variables in the original
+dataset is available in the
+[Variable Dictionary](https://github.com/zhualtis-gif/Greenwashing_CustomerESG/blob/main/docs/variable_dictionary.csv).
+It provides variable descriptions and metadata to help
+readers understand the dataset.
+
+
 # 3. Data Validation
 
 The original dataset was imported using `haven`.

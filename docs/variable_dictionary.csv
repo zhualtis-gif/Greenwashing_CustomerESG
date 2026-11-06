@@ -1,0 +1,35 @@
+variable,friendly_description,role,course_type,missing_n,missing_pct,unique_n,documentation_level,caution
+id,Firm identifier,Identifier,integer,0,0.0,997,Variable name + package context,
+year,Firm-year observation year,Identifier/time,integer,0,0.0,15,Variable name + package context,
+industry,Industry code supplied in the replication dataset,Firm characteristic,integer,0,0.0,69,Variable name + package context,
+GW,Greenwashing index; main outcome in the replication package,Greenwashing,numeric,0,0.0,3677,README + do-files,
+GWA,Alternative greenwashing measure used in robustness analysis,Greenwashing,numeric,0,0.0,2706,Do-file usage,
+DGW,Change/difference-related greenwashing variable used in reverse-causality analysis; exact construction not documented in supplied README,Greenwashing,numeric,1296,34.94,2401,Do-file usage; exact formula unavailable,Exact construction is not fully documented in supplied package
+LGW,Lagged greenwashing index supplied by the authors,Greenwashing,numeric,1296,34.94,2369,Variable name + package context,
+CESG,Customer ESG performance measure; baseline measure in the replication package,Customer ESG,numeric,0,0.0,28,README + do-files,
+CESGM,Alternative customer ESG performance measure,Customer ESG,numeric,0,0.0,13,README + do-files,
+LCESG,Lagged CESG supplied by the authors,Customer ESG,numeric,1296,34.94,28,Variable name + package context,
+LCESGM,Lagged CESGM supplied by the authors,Customer ESG,numeric,1296,34.94,13,Variable name + package context,
+CSR1,Corporate social responsibility measure used in moderation analysis; exact construction not documented in supplied README,Transparency/CSR,numeric,58,1.56,2020,README + do-file usage,Exact construction is not fully documented in supplied package
+sct_num,Supply-chain transparency measure used in moderation analysis; exact construction not documented in supplied README,Transparency,integer,0,0.0,11,README + do-file usage,Exact construction is not fully documented in supplied package
+paper_article,Print/newspaper media coverage measure used in media-coverage moderation analysis,Media,numeric,100,2.7,361,Do-file usage,
+net_article,Online media coverage measure used in media-coverage moderation analysis,Media,numeric,20,0.54,696,Do-file usage,
+positive_score,Positive-media score/measure; exact construction not documented in supplied README/do-files,Media,numeric,2414,65.08,445,Variable present; exact definition unavailable,Exact construction is not fully documented in supplied package
+HHI_A,Market-concentration index used in heterogeneity analysis,Market environment,numeric,14,0.38,511,Do-file usage,
+DID_ftz,Binary FTZ-related treatment/marketization indicator used in heterogeneity analysis; exact construction not documented in supplied README,Market environment,integer,0,0.0,2,Do-file usage; exact construction unavailable,Exact construction is not fully documented in supplied package
+imr,Inverse Mills ratio used in the Heckman two-step robustness analysis,Model/selection control,numeric,0,0.0,3103,README + do-file usage,
+LTobinQ,Lagged Tobin's Q control,Firm control,numeric,0,0.0,3632,Variable name + package context,
+LListAge,Lagged/transformed listing-age control supplied by authors,Firm control,numeric,0,0.0,32,Variable name + package context,Exact construction is not fully documented in supplied package
+LMngmhldn,Lagged managerial-ownership control,Firm control,numeric,0,0.0,1761,Variable name + package context,
+LTop1,Lagged largest-shareholder ownership control,Firm control,numeric,0,0.0,2140,Variable name + package context,
+LGrowth,Lagged growth control,Firm control,numeric,0,0.0,3428,Variable name + package context,
+LFIXED,Lagged fixed-assets-related control,Firm control,numeric,0,0.0,3684,Variable name + package context,
+LCashflow,Lagged cash-flow control,Firm control,numeric,0,0.0,3684,Variable name + package context,
+LROA1,Lagged return-on-assets control,Firm control,numeric,0,0.0,3431,Variable name + package context,
+LSize,Lagged firm-size control,Firm control,numeric,0,0.0,3680,Variable name + package context,
+LRD,Lagged R&D-related measure,Firm control,numeric,0,0.0,2793,Variable name + package context,
+LLev,Lagged leverage control,Firm control,numeric,0,0.0,3684,Variable name + package context,
+LInvest1,Lagged investment-related control,Firm control,numeric,0,0.0,3431,Variable name + package context,
+LAge,Lagged age-related control,Firm control,numeric,0,0.0,52,Variable name + package context,
+Lgender,Lagged gender-related management control,Firm control,numeric,0,0.0,3,Variable name + package context,
+LTotalSalary,Lagged total-salary/compensation control,Firm control,numeric,0,0.0,2519,Variable name + package context,

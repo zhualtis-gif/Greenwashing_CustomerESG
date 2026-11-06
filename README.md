@@ -52,6 +52,11 @@ DOI: https://doi.org/10.17632/vwmj3yrt37.1
 The dataset contains 3,709 firm-year observations from
 997 Chinese listed firms, covering 2009–2023.
 
+A data dictionary covering all 34 original variables is
+available here:
+
+[Variable Dictionary](docs/variable_dictionary.csv)
+
 ## Repository Structure
 
 - `data/raw/`: Original input data

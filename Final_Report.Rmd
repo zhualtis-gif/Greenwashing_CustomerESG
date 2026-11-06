@@ -473,6 +473,7 @@ ggplot(
   ) +
   theme_minimal()
 ```
+The vertical clustering of points occurs because CESG has only 28 distinct values across 3,709 firm-year observations. Many observations therefore share the same x-coordinate but have different greenwashing (GW) values, forming visible vertical bands. This pattern reflects the discrete nature of the CESG measure rather than a data-cleaning error.
 
 ## 6.5 Preliminary Interpretation
 

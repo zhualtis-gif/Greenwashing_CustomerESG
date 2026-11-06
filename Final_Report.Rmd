@@ -180,7 +180,6 @@ ggplot(annual_trends, aes(x = year)) +
   geom_point(aes(y = median_GW), size = 1.8) +
   scale_x_continuous(breaks = 2009:2023) +
   labs(
-    title = "Annual Greenwashing Trends",
     x = "Year",
     y = "Greenwashing Index (GW)",
     linetype = "Statistic",
@@ -210,7 +209,6 @@ ggplot(annual_trends, aes(x = year)) +
   geom_point(aes(y = median_CESG), size = 1.8) +
   scale_x_continuous(breaks = 2009:2023) +
   labs(
-    title = "Annual Customer ESG Trends",
     x = "Year",
     y = "Customer ESG Performance (CESG)",
     linetype = "Statistic",
@@ -302,7 +300,6 @@ ggplot(
     linewidth = 0.9
   ) +
   labs(
-    title = "Within-Firm Annual Changes",
     subtitle = "Consecutive-year firm observations",
     x = "Annual Change in Customer ESG (CESG)",
     y = "Annual Change in Greenwashing (GW)",
@@ -472,7 +469,6 @@ ggplot(
     nrow = 1
   ) +
   labs(
-    title = "Customer ESG and Greenwashing",
     subtitle = "Associations by Supply-Chain Transparency Group",
     x = "Customer ESG Performance (CESG)",
     y = "Greenwashing Index (GW)",

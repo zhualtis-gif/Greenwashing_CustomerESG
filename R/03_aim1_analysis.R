@@ -26,16 +26,22 @@ stopifnot(
 )
 
 # 4. Summarize annual GW and CESG levels
+
 annual_trends <- data %>%
   group_by(year) %>%
   summarise(
     n_firms = n_distinct(id),
     mean_GW = mean(GW, na.rm = TRUE),
     median_GW = median(GW, na.rm = TRUE),
+    p25_GW = quantile(GW, 0.25, na.rm = TRUE),
+    p75_GW = quantile(GW, 0.75, na.rm = TRUE),
     mean_CESG = mean(CESG, na.rm = TRUE),
     median_CESG = median(CESG, na.rm = TRUE),
+    p25_CESG = quantile(CESG, 0.25, na.rm = TRUE),
+    p75_CESG = quantile(CESG, 0.75, na.rm = TRUE),
     .groups = "drop"
   )
+
 
 # 5. Calculate changes within each firm
 # Only consecutive years represent annual changes.

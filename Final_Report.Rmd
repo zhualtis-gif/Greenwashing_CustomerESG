@@ -121,8 +121,10 @@ performance related to changes in greenwashing?
 
 ## 5.2 Annual Descriptive Statistics
 
-The following table summarizes the annual mean
-and median of GW and CESG.
+Table 3 reports the annual mean, median, 25th percentile
+(P25), and 75th percentile (P75) of GW and CESG.
+The percentiles describe the middle 50% of observations
+and help show how the distributions vary across years.
 
 ```{r annual-summary}
 knitr::kable(

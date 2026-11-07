@@ -15,6 +15,13 @@ across levels of supply-chain transparency.
    greenwashing across supply-chain transparency groups.
 
 
+## Project Team
+
+- Pinzhang Zhu
+- Scarlett Li
+- Winnie Chen
+
+
 ## Results Preview
 
 The following figures were generated directly from the
@@ -210,15 +217,16 @@ Script: `R/03_aim1_analysis.R`
 
 The analysis includes:
 
-1. Calculating annual means and medians of GW and CESG.
+
+
+1. Calculating annual means, medians, and 25th and 75th percentiles of GW and CESG.
 2. Sorting observations by firm ID and calendar year.
 3. Identifying consecutive-year observations.
-4. Calculating annual changes in GW and CESG for
-   consecutive-year pairs only.
+4. Calculating annual changes in GW and CESG for consecutive-year pairs only.
 5. Summarizing annual changes across firms and years.
-6. Calculating Pearson and Spearman correlations
-   between annual changes in CESG and GW.
+6. Calculating Pearson and Spearman correlations between annual changes in CESG and GW.
 7. Visualizing annual trends and within-firm changes.
+
 
 The correlation calculations and visualizations are
 included in `Final_Report.Rmd`.

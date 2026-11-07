@@ -621,11 +621,15 @@ descriptive associations rather than evidence
 of a causal or statistically established
 moderating effect of transparency.
 
-
 # 7. Discussion and Limitations
 
-Interpretation, sample limitations, and implications
-will be documented after completing both research aims.
+This project examined the relationship between customer ESG performance and supplier greenwashing using 3,709 firm-year observations from 2009 to 2023.
+
+In Aim 1, we examined annual trends and within-firm changes. Among 2,186 consecutive-year observation pairs, changes in CESG and GW showed a weak negative correlation (Pearson r = -0.1291). In Aim 2, the negative association between CESG and GW became weaker across groups with higher values of supply-chain transparency. However, these comparisons are descriptive and do not establish a statistically significant moderating effect.
+
+Several limitations should be considered. First, the panel is unbalanced, meaning that the firms included in the dataset vary across years. Second, the intermediate transparency group contains only 182 observations, which limits comparisons across groups. Third, the results are sensitive to the choice of greenwashing measure: replacing GW with GWA produces substantially different correlation patterns. The available documentation also does not fully explain how these measures were constructed.
+
+Overall, the findings suggest that customer ESG performance and supplier greenwashing are negatively associated in the main descriptive analysis, but this relationship is weak and not consistent across alternative measures. The results should not be interpreted as evidence of causality.
 
 # 8. Reproducibility
 
